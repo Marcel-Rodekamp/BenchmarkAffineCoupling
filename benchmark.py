@@ -21,18 +21,18 @@ import matplotlib.pyplot as plt
 
 PARAMS = {
 # Size of the network
-    "nll": 1, # number of linear layers composing the affine members
-    "ncl": 3, # number of affince compling layers, must be larger then 3!
+    "nll": 3, # number of linear layers composing the affine members
+    "ncl": 6, # number of affince compling layers, must be larger then 3!
     "dim": [48,60,72,84,96], # dimension of system, for our cns we have dim = N_sigma^d * N_t
 # Size of the data;
     "data size": [1_000,2_000,3_000,4_000,5_000,6_000,7_000,8_000,9_000,10_000], # size of the training data i.e. train_dat.size() = (PARAMS["train size"],PARAMS["dim"])
 # Training parameters
     "lr": 1e-2,
     "wd": 0.8,
-    "epochs": 100,
+    "epochs": 1000,
 # Compute information
-    "device": torch.device("cuda"), # On which device (cuda,cpu) to execute
-    "on gpu": True,                 # Set to false if device is cpu
+    "device": torch.device("cpu"), # On which device (cuda,cpu) to execute
+    "on gpu": False,                 # Set to false if device is cpu
     }
 
 # security check
@@ -211,5 +211,10 @@ else:
     fn = "results/CPU"
 
 fn+=f"Bench_ncl{PARAMS['ncl']:g}_nll{PARAMS['nll']:g}_epochs{PARAMS['epochs']:g}.pdf"
+fn_train+=f"train_ncl{PARAMS['ncl']:g}_nll{PARAMS['nll']:g}_epochs{PARAMS['epochs']:g}.dat"
+fn_infer+=f"infer_ncl{PARAMS['ncl']:g}_nll{PARAMS['nll']:g}_epochs{PARAMS['epochs']:g}.dat"
 
 plt.savefig(fn)
+
+np.savetxt(fn_train,timing_train)
+np.savetxt(fn_infer,timing_infer)
